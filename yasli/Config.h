@@ -28,7 +28,7 @@
 
 // Disable C++ RTTI use (e.g. typeid())
 #ifndef YASLI_NO_RTTI
-#define YASLI_NO_RTTI 1
+#define YASLI_NO_RTTI 0
 #endif
 
 #ifndef YASLI_NO_FCVT
@@ -47,7 +47,7 @@
 
 // Serialize std::pair: 1 - ("first", "second") or 0 - ("key", "value")
 #ifndef YASLI_STD_PAIR_FIRST_SECOND
-#define YASLI_STD_PAIR_FIRST_SECOND 0
+#define YASLI_STD_PAIR_FIRST_SECOND 1
 #endif
 
 // Useful to compile out editing functionality like Archive::isEdit() check
@@ -58,7 +58,7 @@
 
 #ifdef _DEBUG
 // BinArchives use short hash of name to compact and speed up. Collision on particular level of hierarchy could cause to wrong result.
-//#define YASLI_BIN_ARCHIVE_CHECK_HASH_COLLISION 
+#define YASLI_BIN_ARCHIVE_CHECK_HASH_COLLISION 
 
 // Node with empty name hasn't size information. So this block will not be suited for search. Using non-empty names in such a block is dangerous.
 #define YASLI_BIN_ARCHIVE_CHECK_EMPTY_NAME_MIX
@@ -133,11 +133,16 @@ namespace yasli {
 }
 #endif
 
+// Check everywhere
+#if defined(NDEBUG) && !defined(_FINAL)
+#undef NDEBUG
+#endif
+
 // Can be used to override YASLI_ASSERT and YASLI_CHECK, see yasli/Assert.h
 #ifndef YASLI_ASSERT_DEFINED
 #endif
 
 // To control dependency of ww
 #ifdef WIN32
-#define XMATH_USE_WW_COLOR
+//#define XMATH_USE_WW_COLOR
 #endif
