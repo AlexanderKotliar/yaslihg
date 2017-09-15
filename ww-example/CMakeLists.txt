@@ -28,3 +28,9 @@ set_target_properties(ww-example PROPERTIES RELWITHDEBINFO_POSTFIX "-relwithdebi
 set_target_properties(ww-example PROPERTIES RELEASE_POSTFIX "-release")
 set_target_properties(ww-example PROPERTIES MINSIZEREL_POSTFIX "-minsizerel")
 
+if (MSVC_IDE)
+    set_target_properties(ww-example PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${PROJECT_SOURCE_DIR})
+    set_target_properties(ww-example PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR})
+    set_target_properties(ww-example PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${PROJECT_SOURCE_DIR})
+    set_target_properties(ww-example PROPERTIES RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${PROJECT_SOURCE_DIR})
+endif (MSVC_IDE)
