@@ -13,6 +13,8 @@ glob:tags
 glob:states
 glob:*.user
 glob:*.sdf
+glob:*.ilk
+glob:*.pdb
 syntax: glob
 yasli-example-*
 qpropertytree-example-*
@@ -27,3 +29,4 @@ tags
 .tmp-*
 .bin
 Debug
+ww-example/*.exe
