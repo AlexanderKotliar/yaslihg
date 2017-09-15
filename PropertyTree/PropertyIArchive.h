@@ -13,7 +13,6 @@
 
 namespace yasli{
 	class EnumDescription;
-	class Object;
 }
 
 class PropertyRow;

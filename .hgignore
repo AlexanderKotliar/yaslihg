@@ -25,3 +25,5 @@ tags
 *.orig
 *.pyc
 .tmp-*
+.bin
+Debug
