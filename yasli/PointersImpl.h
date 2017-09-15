@@ -38,7 +38,7 @@ public:
 			return "";
 	}
 	void create(const char* typeName) const{
-		YASLI_ASSERT(!ptr_ || ptr_->refCount() == 1);
+		YASLI_ASSERT(!ptr_ || ptr_.use_count() == 1);
 		if(typeName && typeName[0] != '\0')
 			ptr_.reset(factory()->create(typeName));
 		else
