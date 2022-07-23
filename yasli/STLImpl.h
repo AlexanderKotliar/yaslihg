@@ -236,8 +236,9 @@ namespace std{
 template<class V>
 bool YASLI_SERIALIZE_OVERRIDE(yasli::Archive& ar, std::pair<std::string, V>& pair, const char* name, const char* label)
 {
-	yasli::StdStringPair<V> keyValue(pair);
-	return ar(static_cast<yasli::KeyValueInterface&>(keyValue), name, label);
+	// yasli::StdStringPair<V> keyValue(pair);
+	// return ar(static_cast<yasli::KeyValueInterface&>(keyValue), name, label);
+  return ar(static_cast<yasli::StdPair<std::string, V>&>(pair), name, label);
 }
 
 template<class K, class V>
