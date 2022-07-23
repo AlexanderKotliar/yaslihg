@@ -146,7 +146,7 @@ void MemoryWriter::appendAsString(double value)
 #elif (defined _WIN32) // mingw
   char buf[CVTBUFSIZE];
   _fcvt_s(buf, CVTBUFSIZE, value, digits_, &point, &sign);
-#elif (defined EMSCRIPTEN) // not thread-safe!!!
+#elif (defined __EMSCRIPTEN__) // not thread-safe!!!
   const char* buf = fcvt(value, digits_, &point, &sign);
 #else
   char buf[CVTBUFSIZE];
@@ -189,7 +189,7 @@ MemoryWriter& MemoryWriter::operator<<(const char* value)
 
 MemoryWriter& MemoryWriter::operator<<(const wchar_t* value)
 {
-#if defined(ANDROID_NDK) || defined(NACL)
+#if defined(__ANDROID__) || defined(NACL)
 	YASLI_ASSERT(0, "Not implemented");
 	return *this;
 #else

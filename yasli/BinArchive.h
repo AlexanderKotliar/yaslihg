@@ -18,7 +18,7 @@
 
 namespace yasli{
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 
 template<class T>
 class Unaligned
