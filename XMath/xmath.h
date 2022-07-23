@@ -299,6 +299,7 @@ public:
 	Vect2f xcol() const { return Vect2f(xx, yx); }
 	Vect2f ycol() const { return Vect2f(xy, yy); }
 	Vect2f col(int axis) const { return axis == X_AXIS ? Vect2f(xx, yx) : Vect2f(xy, yy); }
+  Vect2f diag() const { return Vect2f(xx, yy); }
 
 	void transpose(){ float t = xy; xy = yx; yx = t; }
 	void invert();
