@@ -113,8 +113,7 @@ bool serialize(yasli::Archive& ar, Color3c& c, const char* name, const char* lab
 //Y = 0.30*R + 0.59*G + 0.11*B перевод цветного в чёрно-белый
 //h=0..360,s=0..1,v=0..1
 
-inline void HSVtoRGB(float h,float s,float v,
-					 float& r,float& g,float& b)
+inline void HSVtoRGB(float h,float s,float v, float& r,float& g,float& b)
 {
 	const float min=1e-5f;
 	int i;
@@ -164,11 +163,52 @@ inline void HSVtoRGB(float h,float s,float v,
 	YASLI_ASSERT(b>=0 && b<=1);
 }
 
+inline void RGBtoHSV(float r, float g, float b, float& h, float& s, float& v)
+{
+  v = max(max(r, g), b);
+  float temp = min(min(r, g), b);
+  if (v == 0)
+    s = 0;
+  else
+    s = (v - temp)/v;
+
+  if (s == 0)
+    h = 0;
+  else {
+    float Cr = (v - r) / (v - temp);
+    float Cg = (v - g) / (v - temp);
+    float Cb = (v - b) / (v - temp);
+
+    if (r == v) 
+      h = Cb - Cg;
+    else if (g == v) 
+      h = 2 + Cr - Cb;
+    else if (b == v) 
+      h = 4 + Cg - Cr;
+
+    h = 60 * h;
+    if (h < 0)h += 360;
+  }
+}
+
 void Color4f::setHSV(float h,float s,float v, float alpha)
 {
 	HSVtoRGB(h,s,v, r,g,b);
 	a = alpha;
 }
+
+void Color4f::hsv(float& h,float& s,float& v)
+{
+  RGBtoHSV(r, g, b, h, s, v);
+}
+
+void Color4f::setHue(float h)
+{
+  float h0, s, v;
+  hsv(h0, s, v);
+  setHSV(h, s, v);
+}
+
 
 void Color4c::setHSV(float h,float s,float v, unsigned char alpha)
 {
@@ -182,34 +222,12 @@ void Color4c::setHSV(float h,float s,float v, unsigned char alpha)
 
 void Color4c::hsv(float& h,float& s,float& v)
 {
-	float rf = r/255.f;
-	float gf = g/255.f;
-	float bf = b/255.f;
-	v = max(max(rf,gf),bf);
-	float temp=min(min(rf,gf),bf);
-	if(v==0)
-		s=0;
-	else 
-		s=(v-temp)/v;
+  RGBtoHSV(r/255.f, g/255.f, b/255.f, h, s, v);
+}
 
-	if(s==0)
-		h=0;
-	else {
-		float Cr=(v-rf)/(v-temp);
-		float Cg=(v-gf)/(v-temp);
-		float Cb=(v-bf)/(v-temp);
-
-		if(rf==v) {
-			h=Cb-Cg;
-		}
-		else if(gf==v) {
-			h=2+Cr-Cb;
-		} 
-		else if(bf==v) {
-			h=4+Cg-Cr;
-		}
-
-		h=60*h;
-		if(h<0)h+=360;
-	}
+void Color4c::setHue(float h)
+{
+  float h0, s, v;
+  hsv(h0, s, v);
+  setHSV(h, s, v);
 }

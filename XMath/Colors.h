@@ -14,6 +14,8 @@ struct Color4f
 	void set(float r_,float g_,float b_,float a_)	{ r = r_; g = g_; b = b_; a = a_; }
 
 	void setHSV(float h,float s,float v, float alpha = 1.f);
+  void setHue(float h);
+  void hsv(float& h, float& s, float& v);
 
 	Color4f& operator += (const Color4f &color)	{ r+=color.r; g+=color.g; b+=color.b; a+=color.a; return *this; }
 	Color4f& operator -= (const Color4f &color)	{ r-=color.r; g-=color.g; b-=color.b; a-=color.a; return *this; }
@@ -60,7 +62,7 @@ struct Color4c
 	
 	Color4c()										{ }
 	Color4c(const Color4f& color)					{ set(color.GetR(),color.GetG(),color.GetB(),color.GetA()); }
-	Color4c(const Color3c& color);
+	Color4c(const Color3c& color, unsigned char alpha = 255);
 	Color4c(unsigned char _r, unsigned char _g, unsigned char _b, unsigned char _a=255) { r=_r; g=_g; b=_b; a=_a; }
 	explicit Color4c(unsigned int _argb) { argb() = _argb; }
 	void set(int rc,int gc,int bc,int ac=255)	{ r=rc; g=gc; b=bc; a=ac; }
@@ -70,7 +72,10 @@ struct Color4c
 	Color4c& setSafe1(const Color4f& color)		{ set(clamp(color.GetR(),0,255), clamp(color.GetG(),0,255), clamp(color.GetB(),0,255), clamp(color.GetA(),0,255)); return *this; }
 
 	Color4c& setGDI(unsigned int color);
-	void setHSV(float h,float s,float v, unsigned char alpha = 255);
+
+  void setHSV(float h, float s, float v, unsigned char alpha = 255);
+  void setHue(float h);
+  void hsv(float& h, float& s, float& v);
 
 	Color4c& operator *= (float f)			{ r=xround(r*f); g=xround(g*f); b=xround(b*f); a=xround(a*f); return *this; }
   Color4c& operator += (const Color4c &p)		{ r+=p.r; g+=p.g; b+=p.b; a+=p.a; return *this; }
@@ -88,7 +93,6 @@ struct Color4c
 	unsigned int& argb()							{ return *reinterpret_cast<unsigned int*>(this); }
 	unsigned int rgb() const 					{ return r | g << 8 | b << 16; }
 	unsigned int rgba() const 					{ return r | g << 8 | b << 16 | a << 24; }
-	void hsv(float& h,float& s,float& v);
 	unsigned char& operator[](int i)				{ return ((unsigned char*)this)[i];}
 	void interpolate(const Color4c &u,const Color4c &v,float f) { r=xround(u.r+int(v.r-u.r)*f); g=xround(u.g+int(v.g-u.g)*f); b=xround(u.b+int(v.b-u.b)*f); a=xround(u.a+(v.a-u.a)*f); }
 	
@@ -140,7 +144,7 @@ inline Color4f::Color4f(const Color4c& color)
 	a = color.a/255.f; 
 }
 
-inline Color4c::Color4c(const Color3c& color)
+inline Color4c::Color4c(const Color3c& color, unsigned char alpha)
 {
-	set(color.r,color.g,color.b,255);
+	set(color.r, color.g, color.b, alpha);
 }
