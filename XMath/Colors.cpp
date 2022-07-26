@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-//test
+//test 1
 #ifdef _MSC_VER
 #define WIN32_LEAN_AND_MEAN
 #pragma warning(disable : 4073 ) // initializers put in library initialization area
